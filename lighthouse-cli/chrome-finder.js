@@ -23,7 +23,10 @@ const execSync = require('child_process').execSync;
 
 module.exports = {
   darwin() {
-    const suffix = '/Contents/MacOS/Google Chrome Canary';
+    const suffixes = [
+      '/Contents/MacOS/Google Chrome Canary',
+      '/Contents/MacOS/Google Chrome'
+    ];
 
     const LSREGISTER =
       '/System/Library/Frameworks/CoreServices.framework' +
@@ -34,15 +37,17 @@ module.exports = {
 
     execSync(
       `${LSREGISTER} -dump` +
-      ' | grep -i \'google chrome canary.app$\'' +
+      ' | grep -i \'google chrome[ canary]\{0,7\}.app$\'' +
       ' | awk \'{$1=""; print $0}\''
     ).toString()
       .split(/\r?\n/)
       .forEach(inst => {
-        const execPath = path.join(inst.trim(), suffix);
-        if (canAccess(execPath)) {
-          installations.push(execPath);
-        }
+        suffixes.forEach(suffix => {
+          const execPath = path.join(inst.trim(), suffix);
+          if (canAccess(execPath)) {
+            installations.push(execPath);
+          }
+        });
       });
 
     const priorities = new Map([
