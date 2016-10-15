@@ -37,7 +37,7 @@ module.exports = {
 
     execSync(
       `${LSREGISTER} -dump` +
-      ' | grep -i \'google chrome[ canary]\{0,7\}.app$\'' +
+      ' | grep -i \'google chrome\\( canary\\)\\?.app$\'' +
       ' | awk \'{$1=""; print $0}\''
     ).toString()
       .split(/\r?\n/)
