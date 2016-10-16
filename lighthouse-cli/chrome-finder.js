@@ -51,9 +51,12 @@ module.exports = {
       });
 
     const priorities = new Map([
-      [/^\/Volumes\//, -1],
-      [/^\/Applications\//, 100],
-      [new RegExp(`^${process.env.HOME}/Applications/`), 50]
+      [/^\/Volumes\/.*Chrome Canary.app/, -1],
+      [/^\/Volumes\/.*Chrome.app/, -2],
+      [/^\/Applications\/.*Chrome Canary.app/, 101],
+      [/^\/Applications\/.*Chrome.app/, 100],
+      [new RegExp(`^${process.env.HOME}/Applications/.*Chrome Canary.app`), 51],
+      [new RegExp(`^${process.env.HOME}/Applications/.*Chrome.app`), 50]
     ]);
 
     return sort(installations, priorities);
